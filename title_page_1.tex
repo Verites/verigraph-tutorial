@@ -9,6 +9,9 @@
 \usepackage{amsmath}
 \usepackage{graphicx}
 \usepackage[colorinlistoftodos]{todonotes}
+\usepackage{url}
+\usepackage{listings}
+\usepackage{minted}
 \addto\captionsbrazilian{}
 
 \begin{document}
@@ -23,18 +26,20 @@
 %	HEADING SECTIONS
 %----------------------------------------------------------------------------------------
 
-\textsc{\normalsize MINHA FACULDADE}\\[1.0cm] % Name of your university/college
-\textsc{\Large MEU CURSO}\\[0.2cm] % Major heading such as course name
-\textsc{\large Laboratório de química}\\[0.2cm] % Minor heading such as course title
+\textsc{\normalsize Universidade Federal do Rio Grande do Sul}\\[1.0cm] % Name of your university/college
+\textsc{\Large Verites}\\[0.2cm] % Major heading such as course name
+\textsc{\large Verification, Validation and Test Group}\\[0.2cm] % Minor heading such as course title
 
 %----------------------------------------------------------------------------------------
 %	TITLE SECTION
 %----------------------------------------------------------------------------------------
 
 \HRule \\[0.4cm]
-{ \huge \bfseries \LARGE{RELATÓRIO DE ATIVIDADE EXPERIMENTAL Nº03} \\ [1.0cm]
-\emph{\large{Técnicas para determinação de volume e determinação de densidade de objetos}}
-}\\[0.4cm] % Title of your document
+{ \huge \bfseries \LARGE{VERIGRAPH} \\ [1.0cm]
+\emph{\large{Software specification and verification tool based on graph rewriting}}
+}\\[0.5cm]
+
+Version 1.0-rc01 \\[0.4cm] % Title of your document
 \HRule \\[1.0cm]
  
 %----------------------------------------------------------------------------------------
@@ -58,37 +63,31 @@
 %\end{minipage}\\[2cm]
 
 % If you don't want a supervisor, uncomment the two lines below and remove the section above
-\flushleft \Large \emph{Alunos:}\\ 
-João Marcos\\ 
-Maria Mara \\ % Your name
+%\flushleft \Large \emph{Alunos:}\\ 
+%João Marcos\\ 
+%Maria Mara \\ % Your name
 
-%----------------------------------------------------------------------------------------
-%	DATE SECTION
-%----------------------------------------------------------------------------------------
+\center {\today}\\[2cm]
 
-\center {\large 26 de Agosto, 2015}\\[2cm] % Date, change the \today to a set date if you want to be precise
+\includegraphics[scale = 3]{logo.jpg}\\[0.5cm]
+\includegraphics[scale = 0.7]{LogoVerites.jpg}
 
-%----------------------------------------------------------------------------------------
-%	LOGO SECTION
-%----------------------------------------------------------------------------------------
-
-\includegraphics[scale = 0.3]{logo.jpg}\\[1cm] % Include a department/university logo - this will require the graphicx package
  
 %---------------------------------------------------------------------------------------- FOLHA DE ROSTO
 
 \begin{titlepage}
 \vfill
-\begin{center} 
-{\large João Marcos \\  [0.1cm]
-Maria Mara } \\[5cm] 
-{\Huge RELATÓRIO DE ATIVIDADE EXPERIMENTAL Nº03}\\[1cm]
-\hspace{.45\textwidth} % posicionando a minipage
-\begin{minipage}{.5\textwidth}
-Técnicas para determinação de volume e determinação de densidade de objetos
-\end{minipage}
+\begin{flushleft} 
+{\large Andrei Costa \\
+Guilherme Grochau Azzi \\
+Jonas Santos Bezerra \\
+Leila Ribeiro \\
+Leonardo M. Rodrigues \\
+Rodrigo Machado } \\ [5cm] 
+{\Huge Verigraph Tutorial}
 \vfill
-26 de Agosto, 2015
-\end{center}
+\today
+\end{flushleft}
 \end{titlepage}
 
 %-------------------------------------------------------------------
@@ -96,116 +95,134 @@ Técnicas para determinação de volume e determinação de densidade de objetos
 
 \end{titlepage}
 
-\section{Resumo}
-\textit{Neste relatório estão descritos os procedimentos e cálculos realizados para aferir volume de líquidos em vidrarias e de corpos diversos imersos nestes líquidos. Posteriormente, são apresentados os resultados da prática, bem como as devidas considerações sobre algumas posturas a serem evitadas durante a aferição do volume que podem prejudicar a precisão dos dados.}\\[1.0cm]
+\section{Installation}
 
-\section{Introdução}
-
-\paragraph*{}
-Uma boa prática laboratorial é alcançada quando se sabe corretamente o uso dos materiais para aferição de medidas, das vidrarias mais comuns e principalmente das substâncias químicas que estão à disponibilidade para o experimento. Além disto, é essencial entender de suas características físico-químicas quando se espera manipulá-las segundo a necessidade.
-\paragraph*{}
-As práticas propõem que o aluno, através da experimentação e da pesquisa empírica, desenvolva suas próprias conclusões sobre o objeto de estudo, além de serem oportunidade de troca de oportunidades com o grupo de trabalho e estudo. 
-\paragraph*{}
-O laboratório de química conta com uma diversidade de equipamentos e vidrarias à disposição do aluno. Geralmente, quando se necessita realizar alguma medida de massa pode ser utilizada uma \textit{balança de precisão}, mas quando se necessita calcular o volume de um corpo sólido, por exemplo, não existe um equipamento especificamente projetado para isto. 
-\paragraph*{}
-Logo, surge a necessidade de desenvolver técnicas de determinação de volume de corpos sólidos. É notório que existem diversas fórmulas matemáticas à disposição para uma aplicação direta, dadas as devidas medidas de cálculo, como o comprimento, largura e altura, ou então o raio, no caso de algum objeto circular ou esférico. Todavia, um estudo sobre a flutuação destes objetos em água poderá também determinar o volume pretendido, visto que quando imersos em água há um deslocamento do líquido. 
-\paragraph*{}
-Logo, uma forma interessante de determinar a densidade dos objetos através do cálculo do volume é aplicando ambas as variáveis, massa \textit{m} e volume \textit{V}, na equação da densidade de um corpo, que relaciona a massa do corpo e seu volume, dada por: $d = \frac{m}{V}$.
-\paragraph*{}
-Este relatório mostra os cálculos realizados para determinar matematicamente o volume e a densidade dos sólidos, além de apresentar uma série de dados empíricos que corroborem as equações matemáticas e uma descrição breve dos procedimentos necessários para se chegar à medida aproximada do volume pretendido.  
-    
-
-
-\section{Desenvolvimento}
-\label{sec:examples}
-
-\subsection{Cálculo do volume por meio de equações matemáticas}
-\paragraph{}
+\subsection{Requirements}
 \begin{itemize}
-\item Dada uma esfera de raio \textit{r}, o volume da esfera é: $V = \frac{4 \pi r^3 }{3}$.
-
-\item Dado um cubo de aresta \textit{a}, seu volume é: $ V = a^3 $
-
-\item Dado um paralelepípedo de dimensões \textit{a}, \textit{b} e \textit{c}, seu volume é: $V = abc$
-
-\item Dado um cilindo de raio da base \textit{r} e altura \textit{h}, seu volume é: $ V = \pi r^2h$
-
+\item GHC (The Glasgow Haskell Compiler) version 8.0.1 or superior
+\item AGG (The Attributed Graph Grammar System) version 2.1: Download at \url{http://www.user.tu-berlin.de/o.runge/agg/}
+\item Cabal 1.24 or Stack 1.1.2
+\item Git Version Control System 
 \end{itemize}
 
-Estas fórmulas matemáticas são suficientes para determinação do volume dos objetos do experimento, desde que se conheça ou seja capaz de determinar as medidas dos sólidos. Portanto, é uma boa técnica de determinação de volume de corpos sólidos. 
+\subsection{On Linux}
 
-\subsection{Apresentação da prática}
-	A leitura do volume pode ser realizada através do cálculo da movimentação de volume dentro de um recipiente como a proveta, por exemplo, e através desta medida é possível determinar o volume do sólido.
-    Para tal, inicialmente é necessário se atentar que o aparelho deve estar na posição vertical para que o efeito de \textit{paralaxe} (deslocamento de um objeto a depender do ponto de vista do observador) seja evitado. Feito isto, a medição do nível atual do líquido na proveta deve ser feita observando a borda inferior do \textit{menisco}, sempre que possível. 
-\subsubsection{Material:}
-\begin{itemize}
-\item Proveta graduada de capacidade 500 ml e graduação 5 ml;
-\item Béquer de 40 ml;
-\item Água;
-\item 1 dado;
-\item 1 pilha alcalina;
-\item 1 esfera maciça pequena;
-\item 1 esfera maciça grande;
-\item 1 bloco pequeno de madeira;
-\item 1 pipeta graduada;
-\item 1 pipeta volumétrica de 25ml;
-\item 1 béquer;
-\item 1 erlenmeyer;
-\item 1 pêra de sucção;
-\item 1 balança de precisão;
-\end{itemize}
+Download the source code and checkout the latest stable version:
+\begin{minted}{bash}
+  $ git clone https://github.com/Verites/verigraph.git
+  $ cd verigraph
+  $ git checkout 1.0-rc01
+\end{minted}
 
-\subsubsection{Procedimentos}
-	Primeiramente, foi testada a capacidade de uma pipeta graduada pipetando, com ajuda de uma pêra de sucção, 9ml de água de um béquer para o erlenmeyer. Em seguida, após alguns testes com a pipeta graduada, o mesmo foi feito com a pipeta volumétrica de 25ml. Foi observada uma notória diferença entre a precisão da pipeta graduada e da pipeta volumétrica, visto que, na volumétrica consegue-se mensurar, com precisão, a quantidade de 25 ml, enquanto que na pipeta graduada a precisão é muito inferior à outra. 
-    
-    Feito isto, prosseguiu-se para a segunda parte da prática, onde foi necessário pesar os objetos de estudo um por um em uma balança de precisão e determinar sua massa. Os valores estão listados abaixo: 
-  
-\begin{table}[]
-\centering
-\caption{Relação objeto-massa}
-\label{my-label}
-\begin{tabular}{ll}
-OBJETO           & MASSA(g) \\[0.01cm]
-Pilha            & 16,469   \\
-Dado             & 04,137   \\
-Bloco de Madeira & 12,407   \\
-Esfera pequena   & 10,942   \\
-Esfera grande    & 49,776  
-\end{tabular}
-\end{table}
 
-Em seguida, encheu-se a proveta  até o nível de 250ml, com água. Depois, cada objeto foi mergulhado na água e foi registrada a variação de nível em cada situação, e através disto foi possível calcular a densidade de cada um dos objetos. 
+If you are using Cabal:
+\begin{minted}{bash}
+  $ cabal install
+  $ export PATH=${PATH}:~/.cabal/bin
+\end{minted}
 
-\begin{itemize}
-\item Pilha: $$d = \frac{16,469}{7,5} \approx 2,195  \textit{ g/ml}$$
-\item Dado: $$d = \frac{4,137}{5} \approx 0,827  \textit{ g/ml}$$
-\item Bloco de madeira:$$ d = \frac{12,407}{55} \approx 0,225  \textit{ g/ml}$$
-\item Esfera pequena: $$d = \frac{10,942}{10} \approx 1,094  \textit{ g/ml}$$
-\item Esfera grande: $$d = \frac{49,776}{65} \approx 0,765 \textit{ g/ml}$$
+If you are using Stack:
+\begin{minted}{bash}
+  $ stack install
+  $ export PATH=${PATH}:~/.local/bin
+\end{minted}
 
-\end{itemize}
-\begin{table}[]
-\centering
-\caption{Volumes e densidades}
-\label{my-label}
-\begin{tabular}{llll}
-OBJETO           & Variação de nível($ml$) & Volume($cm^3$) & Densidade($g/ml$) \\
-Pilha            & 7,5                   & 7,5                          & 2,195           \\
-Dado             & 5                     & 5                            & 0,827           \\
-Bloco de Madeira & 55                    & 55                           & 0,225           \\
-Esfera pequena   & 10                    & 10                           & 0,765           \\
-Esfera grande    & 65                    & 65                           & 1,094          
-\end{tabular}
-\end{table}
+Add the PATH exportation also in your \texttt{.bashrc}
 
-\vfill
+\subsection{On Windows}
 
-\section{Conclusão}
-Através do experimento foi verificado que a densidade de um objeto é uma característica única daquele objeto, e mesmo que sejam feitos do mesmo material, como as duas esferas da prática, devido à massas e volumes diferentes, a densidade se difere entre as duas. Microscopicamente, ter pouca densidade significa ter menos matéria concentrada dentro de um volume, ou seja, no caso estudado, a madeira é muito menos densa do que a pilha, logo, a pilha possui muito mais matéria do que a madeira, se considerarmos uma mesma fração de volume. 
+\subsection{On MacOS}
 
-\section{Referências bibliográficas}
-\begin{itemize}
-\item BRADY, James E.; HUMISTON, Gerard E. \textit{Química geral}. 2ª edição. Rio de Janeiro: LTC, 1986. Volume 1.
-\end{itemize}
+\section{Graph Transformation Model}
 
+\section{Global Configuration}
+
+By default, \texttt{verigraph} will compute \textit{matches} and \textit{Epi-Pairs} with injective morphisms only, to compute with all kinds of morphisms use the \texttt{--all-matches} flag.
+
+\section{Critical Pair Analysis}
+
+\begin{minted}{bash}
+  $ verigraph analysis
+\end{minted}
+
+\section{Concurrent Rules}
+
+Using \texttt{AGG}, open the file \texttt{grammars/Server/server.ggx}, than right-click on the Grammar $>$ New $>$ Rule Sequence. \\
+
+\noindent
+\includegraphics[scale = 0.6]{rule-sequence_01.png}
+
+Right-click on the rule sequence created below the rules of the grammar, than click on \texttt{Show/Edit}, a new pop-up must open.\\
+
+\noindent
+\includegraphics[scale = 0.5]{rule-sequence_02.png}\\
+
+Click on \texttt{New Subsequence} button, a new row will be created at the \texttt{Select a subsequence} table. Select the subsequence to add the rules to it.
+
+Once the subsequence was selected, we can add any rules in the \texttt{Select a rule} table. Select any rule(s) than click on the \texttt{Add} button, it is possible to add a rule more than once by either clicking on the \texttt{Add} button more than once or altering the number of \texttt{Iterations} for a particular rule in the \texttt{Select a rule} table. Once the rule sequence is defined, click on close and save the file.\\
+
+\noindent
+\includegraphics[scale = 0.6]{rule-sequence_03.png}\\
+
+Now, we can use \texttt{verigraph} to compute the concurrent rule(s) for this rule sequence, the basic structure of the command is:
+
+\begin{minted}{bash}
+  $ verigraph concurrent-rule -o <outputFile>.ggx <inputFile>.ggx
+\end{minted}
+
+\subsection{Least disjoint}
+
+To generate the concurrent rule with the least disjoint epi-pairs between each rule in the sequence run:
+
+\begin{minted}{bash}
+  $ verigraph concurrent-rule --max-rule -o output.ggx 
+    grammars/Server/server.ggx
+\end{minted}
+
+Than open the \texttt{output.ggx} file in \texttt{AGG}, it must have one new rule that looks like this:\\
+
+\noindent
+\includegraphics[scale = 0.6]{rule-sequence_04a.png}\\
+\noindent
+\includegraphics[scale = 0.6]{rule-sequence_04b.png}\\
+
+\subsection{Dependent rules}
+
+To generate the concurrent rules where there are dependencies between the rules in the sequence run:
+
+\begin{minted}{bash}
+  $ verigraph concurrent-rule --all-rules --by-dependency -o output.ggx 
+    grammars/Server/server.ggx
+\end{minted}
+
+The output file must have two new rules, one identical (isomorphic) to the one in the previous example, and one other that looks like this:\\
+
+\noindent
+\includegraphics[scale = 0.5]{rule-sequence_05a.png}\\
+\noindent
+\includegraphics[scale = 0.5]{rule-sequence_05b.png}\\
+
+\subsection{Other rules}
+
+To generate all the concurrent rules for this example, run:
+
+\begin{minted}{bash}
+  $ verigraph concurrent-rule -o output.ggx grammars/Server/server.ggx
+\end{minted}
+
+Note this operation may take a while, since it will calculate all possible overlaps between the rules in the sequence (in this particular case 1202 rules)\footnote{We are currently working in graph constraints and multiplicity to improve the generation of concurrent rules}.
+
+All the previous examples were constructed using only injective morphisms, to calculate with all kinds of morphisms use the flag \texttt{--all-matches} after the \texttt{verigraph} command.
+
+\section{Second Order}
+
+\begin{minted}{bash}
+  $ verigraph snd-order
+\end{minted}
+
+%\section{Model Checking}
+
+%\begin{minted}{bash}
+%  $ verigraph-mcheck
+%\end{minted}
 \end{document}
