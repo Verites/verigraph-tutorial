@@ -12,7 +12,17 @@
 \usepackage{url}
 \usepackage{listings}
 \usepackage{minted}
+\usepackage{hyperref}
 \addto\captionsbrazilian{}
+
+\newcommand{\verigraphversion}{1.0-rc02}
+
+
+% Enviroment for grouping text and images in a tutorial step
+
+\newenvironment{tutorialstep}
+	{\hspace{-\parindent}\begin{minipage}{\textwidth}}
+    {\vspace{.3cm}\end{minipage}}
 
 \begin{document}
 
@@ -39,7 +49,7 @@
 \emph{\large{Software specification and verification tool based on graph rewriting}}
 }\\[0.5cm]
 
-Version 1.0-rc01 \\[0.4cm] % Title of your document
+Version \verigraphversion \\[0.4cm] % Title of your document
 \HRule \\[1.0cm]
  
 %----------------------------------------------------------------------------------------
@@ -102,122 +112,219 @@ Rodrigo Machado } \\ [5cm]
 \item GHC (The Glasgow Haskell Compiler) version 8.0.1 or superior
 \item AGG (The Attributed Graph Grammar System) version 2.1: Download at \url{http://www.user.tu-berlin.de/o.runge/agg/}
 \item Cabal 1.24 or Stack 1.1.2
-\item Git Version Control System 
+\item Git Version Control System (Optional)
 \end{itemize}
 
 \subsection{On Linux}
 
-Download the source code and checkout the latest stable version:
+\subsubsection{Downloading}
+Download the source code using git and checkout the latest stable version:
 \begin{minted}{bash}
   $ git clone https://github.com/Verites/verigraph.git
   $ cd verigraph
-  $ git checkout 1.0-rc01
+  $ git checkout 1.0-rc02
 \end{minted}
 
+\noindent
+Or download the \texttt{zip} or \texttt{tar.gz} file at of the version 1.0-rc02 at \url{https://github.com/Verites/verigraph/releases}, extract the file and go the target directory.
+
+\subsubsection{Installing}
 
 If you are using Cabal:
 \begin{minted}{bash}
   $ cabal install
-  $ export PATH=${PATH}:~/.cabal/bin
+  $ PATH=${PATH}:~/.cabal/bin
 \end{minted}
 
+\noindent
 If you are using Stack:
 \begin{minted}{bash}
   $ stack install
-  $ export PATH=${PATH}:~/.local/bin
+  $ PATH=${PATH}:~/.local/bin
 \end{minted}
 
-Add the PATH exportation also in your \texttt{.bashrc}
+You should also set the PATH variable in your \texttt{.bashrc} file, ensuring that the verigraph executables will be found in future sessions, after the previous steps, this can be done by this way:
 
-\subsection{On Windows}
+\begin{minted}{bash}
+  $ echo "export PATH=${PATH}" >> ~/.bashrc
+  $ source ~/.bashrc
+\end{minted}
 
-\subsection{On MacOS}
+%\subsection{On Windows}
 
-\section{Graph Transformation Model}
+%\subsection{On MacOS}
+
+%\section{Graph Transformation Model}
 
 \section{Global Configuration}
 
-By default, \texttt{verigraph} will compute \textit{matches} and \textit{Epi-Pairs} with injective morphisms only, to compute with all kinds of morphisms use the \texttt{--all-matches} flag.
+The rewriting semantics of DPO may restrict matches to monomorphisms (i.e. injective morphisms) or allow arbitrary morphisms. By default, \emph{verigraph} will restrict matches to monomorphisms, but it will allow arbitrary matches if given the \texttt{--all-matches} flag.
+
+Two strategies for satisfability of Negative Application Conditions (NACs) are also provided. By default, only monomorphisms between the NAC object and the instance graph are considered. Alternatively, using the flag \texttt{--partial-injective-nacs}, \emph{verigraph} behaves like AGG and admits the collapsing of elements, as long as they are also collapsed by the match.
+
+Presently, \emph{AGG} is used for creating and reading graph grammar instances and analysis results of \emph{verigraph}, by means of its \texttt{.ggx} and \texttt{.cpx} files. However, \emph{verigraph} does not support some of AGG's features yet, such as:
+
+\begin{itemize}
+\item Edge types with same name but different source and/or target types.
+\item Inheritance
+\item Multiplicity
+\item Attributes
+\end{itemize}
 
 \section{Critical Pair Analysis}
 
+In this section we'll analyze the conflicts and dependencies of the grammar located on \texttt{grammars/Server/server.ggx}, which models the communication between a server and a client. You may want to open it with AGG and familiarize yourself with it.
+
+In order to obtain the conflicts and dependencies of the grammar, run:
+
 \begin{minted}{bash}
-  $ verigraph analysis
+  $ verigraph analysis -o output.cpx grammars/Server/server.ggx
 \end{minted}
+
+\begin{tutorialstep}
+Then open \texttt{output.cpx} with AGG by clicking on one of the options under Analyzer $>$ Critical Pair Analysis $>$ Load. \\
+
+\noindent
+\centering
+\includegraphics[scale = 0.5]{cpa_01.png}
+\end{tutorialstep}
+
+\begin{tutorialstep}
+When asked about adding the grammar to the tree view, click yes. Otherwise, AGG will not display the individual conflicts in detail. \\
+
+\noindent
+\centering
+\includegraphics[scale = 0.6]{cpa_02.png}
+\end{tutorialstep}
+
+\begin{tutorialstep}
+AGG will display matrices indicating the number of conflicts and dependencies between all pairs of rules. In order to visualize the individual conflicts in detail, click on a cell, for example $(4,4)$ in the conflict matrix. \\
+
+\noindent
+\centering
+\includegraphics[scale = 0.5]{cpa_03.png}
+\end{tutorialstep}
+
+\begin{tutorialstep}
+After clicking on the cell, AGG will display the corresponding rules, as well as graphs characterizing the conflicts or dependencies. You may need to rearrange the graphs in order to interpret them. When checking the one conflict between \texttt{deleteMsg} and itself, for example, AGG will show the following graphs, indicating that the conflict occurs when both applications try to delete the same edge between \texttt{data} and \texttt{msg}. \\
+
+\noindent
+\centering
+\includegraphics[scale = 0.5]{cpa_04.png}
+\end{tutorialstep}
 
 \section{Concurrent Rules}
 
-Using \texttt{AGG}, open the file \texttt{grammars/Server/server.ggx}, than right-click on the Grammar $>$ New $>$ Rule Sequence. \\
+\begin{tutorialstep}
+  Using \texttt{AGG}, open the file \texttt{grammars/Server/server.ggx}, then right-click on Grammar $>$ New $>$ Rule Sequence. \\
 
-\noindent
-\includegraphics[scale = 0.6]{rule-sequence_01.png}
+  \noindent
+  \centering
+  \includegraphics[scale = 0.6]{rule-sequence_01.png}
+\end{tutorialstep}
 
-Right-click on the rule sequence created below the rules of the grammar, than click on \texttt{Show/Edit}, a new pop-up must open.\\
+\begin{tutorialstep}
+  Right-click the rule sequence created below the rules of the grammar, then click on \texttt{Show/Edit}, a new pop-up must open.\\
 
-\noindent
-\includegraphics[scale = 0.5]{rule-sequence_02.png}\\
+  \begin{center}
+  \noindent
+  \centering
+  \includegraphics[scale = 0.5]{rule-sequence_02.png}\\
+  \end{center}
+  
+  Click on \texttt{New Subsequence} button, a new row will be created at the \texttt{Select a subsequence} table. Select the subsequence to add the rules to it.
+\end{tutorialstep}
 
-Click on \texttt{New Subsequence} button, a new row will be created at the \texttt{Select a subsequence} table. Select the subsequence to add the rules to it.
+\begin{tutorialstep}
 
-Once the subsequence was selected, we can add any rules in the \texttt{Select a rule} table. Select any rule(s) than click on the \texttt{Add} button, it is possible to add a rule more than once by either clicking on the \texttt{Add} button more than once or altering the number of \texttt{Iterations} for a particular rule in the \texttt{Select a rule} table. Once the rule sequence is defined, click on close and save the file.\\
+  Once the subsequence was selected, we can add rules to the \texttt{Select a rule} table. Select any rule(s) and click the \texttt{Add} button. You may add a rule multiples times or change its number of \texttt{Iterations} to repeat it. Once the rule sequence is defined, click on close and save the file.\\
 
-\noindent
-\includegraphics[scale = 0.6]{rule-sequence_03.png}\\
+  \noindent
+  \centering
+  \includegraphics[scale = 0.6]{rule-sequence_03.png}\\
+\end{tutorialstep}
 
-Now, we can use \texttt{verigraph} to compute the concurrent rule(s) for this rule sequence, the basic structure of the command is:
+Now, we can use \texttt{verigraph} to compute all the concurrent rules for this rule sequence, using the following command:
 
 \begin{minted}{bash}
-  $ verigraph concurrent-rule -o <outputFile>.ggx <inputFile>.ggx
+$ verigraph concurrent-rule -o output.ggx \
+  grammars/Server/server.ggx
 \end{minted}
 
-\subsection{Least disjoint}
+Note that this will generate \emph{all} concurrent rules, which may be a lot (in this particular case 1202 rules), and may take quite some time\footnote{We are currently working on using graph constraints and multiplicity to improve the generation of concurrent rules, reducing the number of spurious rules that are generated.}.
 
-To generate the concurrent rule with the least disjoint epi-pairs between each rule in the sequence run:
+The generated rules are also based on the restriction that matches are always monomorphic. In order to account for arbitrary matches, use the flag \texttt{--all-matches} after the \texttt{verigraph} command.
+
+\subsection{Maximizing Interaction between Rules}
+
+The generated concurrent rules allow for different degrees of interaction between rules, including a parallel rule (where the matched subgraphs are completely disjoint). Sometimes, however, only the concurrent rules with maximum interaction are desired, which may be obtained by the following command:
 
 \begin{minted}{bash}
-  $ verigraph concurrent-rule --max-rule -o output.ggx 
+  $ verigraph concurrent-rule --max-rule -o output.ggx \
     grammars/Server/server.ggx
 \end{minted}
 
-Than open the \texttt{output.ggx} file in \texttt{AGG}, it must have one new rule that looks like this:\\
+\begin{tutorialstep}
+  Then open the \texttt{output.ggx} file in \texttt{AGG}, which should have a new rule that looks like this:\\
 
-\noindent
-\includegraphics[scale = 0.6]{rule-sequence_04a.png}\\
-\noindent
-\includegraphics[scale = 0.6]{rule-sequence_04b.png}\\
+  \noindent
+  \includegraphics[scale = 0.5]{rule-sequence_04a.png}\\
+  \noindent
+  \includegraphics[scale = 0.5]{rule-sequence_04b.png}\\
+\end{tutorialstep}
 
 \subsection{Dependent rules}
 
-To generate the concurrent rules where there are dependencies between the rules in the sequence run:
+Sometimes, maximizing the interaction between rules is an excessively strong restriction. An alternative is generating concurrent rules based on the dependencies between the subsequent rules of a rule sequence. In order to generate such concurrent rules, run:
 
 \begin{minted}{bash}
-  $ verigraph concurrent-rule --all-rules --by-dependency -o output.ggx 
-    grammars/Server/server.ggx
+  $ verigraph concurrent-rule --all-rules --by-dependency -o \ 
+  	output.ggx grammars/Server/server.ggx
 \end{minted}
 
-The output file must have two new rules, one identical (isomorphic) to the one in the previous example, and one other that looks like this:\\
+The output file must have two new rules, the same one as the previous example, and another that looks like this:\\
 
 \noindent
-\includegraphics[scale = 0.5]{rule-sequence_05a.png}\\
+\includegraphics[scale = 0.4]{rule-sequence_05a.png}\\
 \noindent
-\includegraphics[scale = 0.5]{rule-sequence_05b.png}\\
-
-\subsection{Other rules}
-
-To generate all the concurrent rules for this example, run:
-
-\begin{minted}{bash}
-  $ verigraph concurrent-rule -o output.ggx grammars/Server/server.ggx
-\end{minted}
-
-Note this operation may take a while, since it will calculate all possible overlaps between the rules in the sequence (in this particular case 1202 rules)\footnote{We are currently working in graph constraints and multiplicity to improve the generation of concurrent rules}.
-
-All the previous examples were constructed using only injective morphisms, to calculate with all kinds of morphisms use the flag \texttt{--all-matches} after the \texttt{verigraph} command.
+\includegraphics[scale = 0.4]{rule-sequence_05b.png}\\
 
 \section{Second Order}
 
+Although AGG is used for creating the input to \texttt{verigraph}, it does not support second order productions. In order to specify such productions in AGG, we simulate them by using two first order rules, following a naming convention and linking their elements with \emph{Object Names}.\\
+
+{\noindent\centering\includegraphics[scale = 0.5]{objName.png}\\}
+
+The Figure above shows how to set an \emph{Object Name} in a graph element (only numbers are accepted).
+The Figure below is a second order production simulated in AGG, the two \emph{pacman} nodes linked have the number 9 in their \emph{Object Name}.
+
+\begin{center}
+\noindent\includegraphics[scale = 0.6]{noViolenceLeft.png}\\
+\noindent\includegraphics[scale = 0.6]{noViolenceRight.png}\\
+\end{center}
+
+The grammar in \texttt{grammars/Pacman/pacman2.ggx} simulates a simple Pacman game.
+This grammar contains the second order production above.
+Running the command below will create a new grammar file where all second order productions are applied once on all possible matches of the first order productions.
+
 \begin{minted}{bash}
-  $ verigraph snd-order
+  $ verigraph snd-order -o output.ggx \
+  	grammars/Pacman/pacman2.ggx
+\end{minted}
+
+The new production below must be on \texttt{output.ggx} file.
+
+{\noindent\centering\includegraphics[scale = 0.5]{kill.png}\\}
+
+\subsection{Inter-level Analysis}
+
+Two new kind analysis arise from inter-level interaction between productions.
+These algorithms are being studied, and their implementations are not considered entirely finished, also it lacks of a support GUI.
+Despite of it, a log with quantitative information is generated running the command below.
+
+\begin{minted}{bash}
+  $ verigraph analysis --snd-order --all-matches \
+  	grammars/Pacman/pacman2.ggx
 \end{minted}
 
 %\section{Model Checking}
