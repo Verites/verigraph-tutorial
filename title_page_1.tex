@@ -13,9 +13,11 @@
 \usepackage{listings}
 \usepackage{minted}
 \usepackage{hyperref}
+\usepackage{marginnote}
+\usepackage[marginparwidth=2.5cm]{geometry}
 \addto\captionsbrazilian{}
 
-\newcommand{\verigraphversion}{1.0-rc02}
+\newcommand{\verigraphversion}{1.0.0}
 
 
 % Enviroment for grouping text and images in a tutorial step
@@ -23,6 +25,8 @@
 \newenvironment{tutorialstep}
 	{\hspace{-\parindent}\begin{minipage}{\textwidth}}
     {\vspace{.3cm}\end{minipage}}
+
+\sloppy
 
 \begin{document}
 
@@ -92,7 +96,7 @@ Version \verigraphversion \\[0.4cm] % Title of your document
 Guilherme Grochau Azzi \\
 Jonas Santos Bezerra \\
 Leila Ribeiro \\
-Leonardo M. Rodrigues \\
+Leonardo Marques Rodrigues \\
 Rodrigo Machado } \\ [5cm] 
 {\Huge Verigraph Tutorial}
 \vfill
@@ -105,6 +109,10 @@ Rodrigo Machado } \\ [5cm]
 
 \end{titlepage}
 
+\tableofcontents
+
+\pagebreak
+
 \section{Installation}
 
 \subsection{Requirements}
@@ -115,32 +123,32 @@ Rodrigo Machado } \\ [5cm]
 \item Git Version Control System (Optional)
 \end{itemize}
 
-\subsection{On Linux}
+\subsection{On Linux/Mac}
 
 \subsubsection{Downloading}
 Download the source code using git and checkout the latest stable version:
 \begin{minted}{bash}
   $ git clone https://github.com/Verites/verigraph.git
   $ cd verigraph
-  $ git checkout 1.0-rc02
+  $ git checkout 1.0.0
 \end{minted}
 
 \noindent
-Or download the \texttt{zip} or \texttt{tar.gz} file at of the version 1.0-rc02 at \url{https://github.com/Verites/verigraph/releases}, extract the file and go the target directory.
+Or download the \texttt{zip} or \texttt{tar.gz} file at of the version 1.0.0 at \url{https://github.com/Verites/verigraph/releases}, extract the file and go the target directory.
 
 \subsubsection{Installing}
 
-If you are using Cabal:
-\begin{minted}{bash}
-  $ cabal install
-  $ PATH=${PATH}:~/.cabal/bin
-\end{minted}
-
-\noindent
 If you are using Stack:
 \begin{minted}{bash}
   $ stack install
   $ PATH=${PATH}:~/.local/bin
+\end{minted}
+
+\noindent
+If you are using Cabal:
+\begin{minted}{bash}
+  $ cabal install
+  $ PATH=${PATH}:~/.cabal/bin
 \end{minted}
 
 You should also set the PATH variable in your \texttt{.bashrc} file, ensuring that the verigraph executables will be found in future sessions, after the previous steps, this can be done by this way:
@@ -150,11 +158,35 @@ You should also set the PATH variable in your \texttt{.bashrc} file, ensuring th
   $ source ~/.bashrc
 \end{minted}
 
-%\subsection{On Windows}
+\subsection{On Windows}
+
+\subsubsection{Downloading}
+Download the source code using git and checkout the latest stable version:
+\begin{minted}{bash}
+  $ git clone https://github.com/Verites/verigraph.git
+  $ cd verigraph
+  $ git checkout 1.0.0
+\end{minted}
+
+\noindent
+Or download the \texttt{zip} or \texttt{tar.gz} file at of the version 1.0.0 at \url{https://github.com/Verites/verigraph/releases}, extract the file and go the target directory via the \emph{command prompt}.
+
+\subsection{Installation}
+
+Download the latest Stack\footnote{Installation via Cabal was not tested on Windows} from \url{https://docs.haskellstack.org/en/stable/install_and_upgrade/#windows} and follow the default installation instructions.
+
+In the prompt command, run:
+
+\begin{minted}{bash}
+  ..\verigraph-1.0.0> stack setup 
+  ..\verigraph-1.0.0> stack install
+\end{minted}
 
 %\subsection{On MacOS}
 
 %\section{Graph Transformation Model}
+
+\pagebreak
 
 \section{Global Configuration}
 
@@ -170,6 +202,8 @@ Presently, \emph{AGG} is used for creating and reading graph grammar instances a
 \item Multiplicity
 \item Attributes
 \end{itemize}
+
+\pagebreak
 
 \section{Critical Pair Analysis}
 
@@ -213,6 +247,8 @@ After clicking on the cell, AGG will display the corresponding rules, as well as
 \includegraphics[scale = 0.5]{cpa_04.png}
 \end{tutorialstep}
 
+\pagebreak
+
 \section{Concurrent Rules}
 
 \begin{tutorialstep}
@@ -251,7 +287,7 @@ $ verigraph concurrent-rule -o output.ggx \
   grammars/Server/server.ggx
 \end{minted}
 
-Note that this will generate \emph{all} concurrent rules, which may be a lot (in this particular case 1202 rules), and may take quite some time\footnote{We are currently working on using graph constraints and multiplicity to improve the generation of concurrent rules, reducing the number of spurious rules that are generated.}.
+Note that this will generate \emph{all} concurrent rules, which may be a lot (in this particular case 1202 rules), and may take quite some time. We are currently working on using graph constraints and multiplicity to improve the generation of concurrent rules, reducing the number of spurious rules that are generated.
 
 The generated rules are also based on the restriction that matches are always monomorphic. In order to account for arbitrary matches, use the flag \texttt{--all-matches} after the \texttt{verigraph} command.
 
@@ -279,7 +315,7 @@ Sometimes, maximizing the interaction between rules is an excessively strong res
 
 \begin{minted}{bash}
   $ verigraph concurrent-rule --all-rules --by-dependency -o \ 
-  	output.ggx grammars/Server/server.ggx
+  	output.ggx grammars/Server/server.ggxOlá 
 \end{minted}
 
 The output file must have two new rules, the same one as the previous example, and another that looks like this:\\
@@ -288,6 +324,55 @@ The output file must have two new rules, the same one as the previous example, a
 \includegraphics[scale = 0.4]{rule-sequence_05a.png}\\
 \noindent
 \includegraphics[scale = 0.4]{rule-sequence_05b.png}\\
+
+\pagebreak
+
+\subsection{Constraints}
+
+It is possible to use positive and negative atomic constraints to restrict the generation of concurrent rules to more significant ones. This is still a \textit{beta} feature that works only with concurrent rules.\\
+
+\begin{tutorialstep}
+To add new atomic constraints to a Grammar using \texttt{AGG}, right-click on Grammar $>$ New $>$ Atomic Constraint. \\
+
+  \noindent
+  \centering
+  \includegraphics[scale = 0.6]{atomic_constraints01.png}
+\end{tutorialstep}
+
+\begin{tutorialstep}
+Click on the newly created atomic constraint to add elements to its \emph{Premise} and \emph{Conclusion} graphs. Notice that  \emph{Verigraph} uses the name of an atomic constraint to interpret it as positive or negative: negative constraints have to start with an $-$ (hyphen), otherwise they are treated as positive. \\
+
+  \noindent
+  \centering
+  \includegraphics[scale = 0.6]{new_atomic}
+  
+\end{tutorialstep}
+
+\pagebreak
+\noindent
+\textbf{Important:} Although AGG supports adding multiple conclusion graphs to a constraint, Verigraph doesn't.\\
+
+\begin{figure}
+  \noindent
+  \centering
+  \includegraphics[scale = 0.6]{new_atomic02}
+  \caption{Negative atomic constraint forbidding the existence of more than one server.}
+\end{figure}
+
+%% How to use AGG to add atomic constraints
+
+To enable \emph{Verigraph} to use constraints in order to cut off invalid concurrent rules, add the \texttt{--use-constraints} flag before the concurrent rule command. For example:
+
+\begin{minted}{bash}
+  $ verigraph --use-constraints concurrent-rule --all-rules \ 
+    --by-dependency -o output.ggx grammars/Server/server.ggx
+\end{minted}
+
+It can be combined with any previous concurrent rule generation strategy.
+%% Gui> sugestão pra deixar bem claro
+Note that combining constraints and dependency-induced rules will \emph{not} generate a complete set of rules, since any dependencies caused by the constraints are not not yet calculated by verigraph.
+
+\pagebreak
 
 \section{Second Order}
 
@@ -327,7 +412,26 @@ Despite of it, a log with quantitative information is generated running the comm
   	grammars/Pacman/pacman2.ggx
 \end{minted}
 
-%\section{Model Checking}
+\pagebreak
+
+\section{Contact Information}
+
+\begin{description}
+\item[API internal documentation]:\\ \url{https://verites.github.io/verigraph-docs/}
+\item[Reporting issues with \emph{Verigraph} or its tutorial]:\\ \url{https://github.com/Verites/verigraph/issues}
+\item[Authors' Information]:
+\begin{itemize}
+\item Andrei Costa: \url{https://inf.ufrgs.br/~acosta/}
+\item Guilherme Grochau Azzi: \url{https://inf.ufrgs.br/~ggazzi/}
+\item Jonas Santos Bezerra: \url{https://inf.ufrgs.br/~jsbezerra/}
+\item Leila Ribeiro: \url{https://inf.ufrgs.br/~leila/}
+\item Leonardo Marques Rodrigues
+\item Rodrigo Machado: \url{https://inf.ufrgs.br/~rma/}
+\end{itemize}
+
+\end{description}
+
+
 
 %\begin{minted}{bash}
 %  $ verigraph-mcheck
