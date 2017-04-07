@@ -17,10 +17,9 @@
 \usepackage[marginparwidth=2.5cm]{geometry}
 \addto\captionsbrazilian{}
 
-\newcommand{\verigraphversion}{1.0.1}
+\newcommand{\verigraphversion}[0]{1.1.0}
 
-
-% Enviroment for grouping text and images in a tutorial step
+% Environment for grouping text and images in a tutorial step
 
 \newenvironment{tutorialstep}
 	{\hspace{-\parindent}\begin{minipage}{\textwidth}}
@@ -49,8 +48,9 @@
 %----------------------------------------------------------------------------------------
 
 \HRule \\[0.4cm]
-{ \huge \bfseries \LARGE{VERIGRAPH} \\ [1.0cm]
-\emph{\large{Software specification and verification tool based on graph rewriting}}
+{ %\huge \bfseries \LARGE{VERIGRAPH} \\ [1.0cm]
+\includegraphics[scale = 0.2]{img/logos/Verigraph}\\
+\huge \bfseries \emph{\large{Software specification and verification tool\\based on graph rewriting}}
 }\\[0.5cm]
 
 Version \verigraphversion \\[0.4cm] % Title of your document
@@ -82,9 +82,8 @@ Version \verigraphversion \\[0.4cm] % Title of your document
 %Maria Mara \\ % Your name
 
 \center {\today}\\[2cm]
-
-\includegraphics[scale = 3]{logo.jpg}\\[0.5cm]
-\includegraphics[scale = 0.7]{LogoVerites.jpg}
+%\includegraphics[scale = 3]{logo.jpg}\\[0.5cm]
+\includegraphics[scale = 0.7]{img/logos/LogoVerites.jpg}
 
  
 %---------------------------------------------------------------------------------------- FOLHA DE ROSTO
@@ -113,11 +112,17 @@ Rodrigo Machado } \\ [5cm]
 
 \pagebreak
 
+\section{About it}
+
+Verigraph is a new tool for simulating and verifying graph grammars. The tool is implemented in the purely functional programming language Haskell and it currently implements important techniques such as critical pair analysis and construction of concurrent rules from rule sequences and graph processes.
+
+The algorithms are implemented in a generic functional style, inspired by the framework of adhesive HLR systems. Most of the constructions are implemented in a very close manner to the formal definitions, which makes it easier to inspect for correctness.
+
 \section{Installation}
 
 \subsection{Requirements}
 \begin{itemize}
-\item GHC (The Glasgow Haskell Compiler) version 8.0.1 or superior
+\item GHC (The Glasgow Haskell Compiler) version 7.10 or superior
 \item AGG (The Attributed Graph Grammar System) version 2.1: Download at \url{http://www.user.tu-berlin.de/o.runge/agg/}
 \item Cabal 1.24 or Stack 1.1.2
 \item Git Version Control System (Optional)
@@ -127,14 +132,18 @@ Rodrigo Machado } \\ [5cm]
 
 \subsubsection{Downloading}
 Download the source code using git and checkout the latest stable version:
-\begin{minted}{bash}
+\begingroup
+\catcode`\!=\active
+\def!#1!{\verigraphversion}
+\begin{minted}[escapeinside=||]{bash}
   $ git clone https://github.com/Verites/verigraph.git
   $ cd verigraph
-  $ git checkout 1.0.1
+  $ git checkout |!i!|
 \end{minted}
+\endgroup
 
 \noindent
-Or download the \texttt{zip} or \texttt{tar.gz} file at of the version 1.0.1 at \url{https://github.com/Verites/verigraph/releases}, extract the file and go the target directory.
+Or download the \texttt{zip} or \texttt{tar.gz} file at of the version \verigraphversion{} at \url{https://github.com/Verites/verigraph/releases}, extract the file and go the target directory.
 
 \subsubsection{Installing}
 
@@ -162,14 +171,19 @@ You should also set the PATH variable in your \texttt{.bashrc} file, ensuring th
 
 \subsubsection{Downloading}
 Download the source code using git and checkout the latest stable version:
-\begin{minted}{bash}
+
+\begingroup
+\catcode`\!=\active
+\def!#1!{\verigraphversion}
+\begin{minted}[escapeinside=||]{bash}
   $ git clone https://github.com/Verites/verigraph.git
   $ cd verigraph
-  $ git checkout 1.0.1
+  $ git checkout |!i!|
 \end{minted}
+\endgroup
 
 \noindent
-Or download the \texttt{zip} or \texttt{tar.gz} file at of the version 1.0.1 at \url{https://github.com/Verites/verigraph/releases}, extract the file and go the target directory via the \emph{command prompt}.
+Or download the \texttt{zip} or \texttt{tar.gz} file at of the version \verigraphversion{} at \url{https://github.com/Verites/verigraph/releases}, extract the file and go the target directory via the \emph{command prompt}.
 
 \subsection{Installation}
 
@@ -177,10 +191,14 @@ Download the latest Stack\footnote{Installation via Cabal was not tested on Wind
 
 In the prompt command, run:
 
-\begin{minted}{bash}
-  ..\verigraph-1.0.1> stack setup 
-  ..\verigraph-1.0.1> stack install
+\begingroup
+\catcode`\!=\active
+\def!#1!{\textbackslash{}verigraph-\verigraphversion}
+\begin{minted}[escapeinside=||]{bash}
+  ..|!i!|> stack setup 
+  ..|!i!|> stack install
 \end{minted}
+\endgroup
 
 %\subsection{On MacOS}
 
@@ -220,7 +238,7 @@ Then open \texttt{output.cpx} with AGG by clicking on one of the options under A
 
 \noindent
 \centering
-\includegraphics[scale = 0.5]{cpa_01.png}
+\includegraphics[scale = 0.5]{img/cpa/cpa_01.png}
 \end{tutorialstep}
 
 \begin{tutorialstep}
@@ -228,7 +246,7 @@ When asked about adding the grammar to the tree view, click yes. Otherwise, AGG 
 
 \noindent
 \centering
-\includegraphics[scale = 0.6]{cpa_02.png}
+\includegraphics[scale = 0.6]{img/cpa/cpa_02.png}
 \end{tutorialstep}
 
 \begin{tutorialstep}
@@ -236,7 +254,7 @@ AGG will display matrices indicating the number of conflicts and dependencies be
 
 \noindent
 \centering
-\includegraphics[scale = 0.5]{cpa_03.png}
+\includegraphics[scale = 0.5]{img/cpa/cpa_03.png}
 \end{tutorialstep}
 
 \begin{tutorialstep}
@@ -244,7 +262,7 @@ After clicking on the cell, AGG will display the corresponding rules, as well as
 
 \noindent
 \centering
-\includegraphics[scale = 0.5]{cpa_04.png}
+\includegraphics[scale = 0.5]{img/cpa/cpa_04.png}
 \end{tutorialstep}
 
 \pagebreak
@@ -256,7 +274,7 @@ After clicking on the cell, AGG will display the corresponding rules, as well as
 
   \noindent
   \centering
-  \includegraphics[scale = 0.6]{rule-sequence_01.png}
+  \includegraphics[scale = 0.6]{img/concurrent-rules/rule-sequence_01.png}
 \end{tutorialstep}
 
 \begin{tutorialstep}
@@ -265,7 +283,7 @@ After clicking on the cell, AGG will display the corresponding rules, as well as
   \begin{center}
   \noindent
   \centering
-  \includegraphics[scale = 0.5]{rule-sequence_02.png}\\
+  \includegraphics[scale = 0.5]{img/concurrent-rules/rule-sequence_02.png}\\
   \end{center}
   
   Click on \texttt{New Subsequence} button, a new row will be created at the \texttt{Select a subsequence} table. Select the subsequence to add the rules to it.
@@ -277,7 +295,7 @@ After clicking on the cell, AGG will display the corresponding rules, as well as
 
   \noindent
   \centering
-  \includegraphics[scale = 0.6]{rule-sequence_03.png}\\
+  \includegraphics[scale = 0.6]{img/concurrent-rules/rule-sequence_03.png}\\
 \end{tutorialstep}
 
 Now, we can use \texttt{verigraph} to compute all the concurrent rules for this rule sequence, using the following command:
@@ -304,9 +322,9 @@ The generated concurrent rules allow for different degrees of interaction betwee
   Then open the \texttt{output.ggx} file in \texttt{AGG}, which should have a new rule that looks like this:\\
 
   \noindent
-  \includegraphics[scale = 0.5]{rule-sequence_04a.png}\\
+  \includegraphics[scale = 0.5]{img/concurrent-rules/rule-sequence_04a.png}\\
   \noindent
-  \includegraphics[scale = 0.5]{rule-sequence_04b.png}\\
+  \includegraphics[scale = 0.5]{img/concurrent-rules/rule-sequence_04b.png}\\
 \end{tutorialstep}
 
 \subsection{Dependent rules}
@@ -315,15 +333,15 @@ Sometimes, maximizing the interaction between rules is an excessively strong res
 
 \begin{minted}{bash}
   $ verigraph concurrent-rule --all-rules --by-dependency -o \ 
-  	output.ggx grammars/Server/server.ggxOlá 
+  	output.ggx grammars/Server/server.ggx
 \end{minted}
 
 The output file must have two new rules, the same one as the previous example, and another that looks like this:\\
 
 \noindent
-\includegraphics[scale = 0.4]{rule-sequence_05a.png}\\
+\includegraphics[scale = 0.4]{img/concurrent-rules/rule-sequence_05a.png}\\
 \noindent
-\includegraphics[scale = 0.4]{rule-sequence_05b.png}\\
+\includegraphics[scale = 0.4]{img/concurrent-rules/rule-sequence_05b.png}\\
 
 \pagebreak
 
@@ -336,7 +354,7 @@ To add new atomic constraints to a Grammar using \texttt{AGG}, right-click on Gr
 
   \noindent
   \centering
-  \includegraphics[scale = 0.6]{atomic_constraints01.png}
+  \includegraphics[scale = 0.6]{img/concurrent-rules/atomic_constraints01.png}
 \end{tutorialstep}
 
 \begin{tutorialstep}
@@ -344,7 +362,7 @@ Click on the newly created atomic constraint to add elements to its \emph{Premis
 
   \noindent
   \centering
-  \includegraphics[scale = 0.6]{new_atomic}
+  \includegraphics[scale = 0.6]{img/concurrent-rules/new_atomic}
   
 \end{tutorialstep}
 
@@ -355,7 +373,7 @@ Click on the newly created atomic constraint to add elements to its \emph{Premis
 \begin{figure}
   \noindent
   \centering
-  \includegraphics[scale = 0.6]{new_atomic02}
+  \includegraphics[scale = 0.6]{img/concurrent-rules/new_atomic02}
   \caption{Negative atomic constraint forbidding the existence of more than one server.}
 \end{figure}
 
@@ -378,14 +396,14 @@ Note that combining constraints and dependency-induced rules will \emph{not} gen
 
 Although AGG is used for creating the input to \texttt{verigraph}, it does not support second order productions. In order to specify such productions in AGG, we simulate them by using two first order rules, following a naming convention and linking their elements with \emph{Object Names}.\\
 
-{\noindent\centering\includegraphics[scale = 0.5]{objName.png}\\}
+{\noindent\centering\includegraphics[scale = 0.5]{img/snd-order/objName.png}\\}
 
 The Figure above shows how to set an \emph{Object Name} in a graph element (only numbers are accepted).
 The Figure below is a second order production simulated in AGG, the two \emph{pacman} nodes linked have the number 9 in their \emph{Object Name}.
 
 \begin{center}
-\noindent\includegraphics[scale = 0.6]{noViolenceLeft.png}\\
-\noindent\includegraphics[scale = 0.6]{noViolenceRight.png}\\
+\noindent\includegraphics[scale = 0.6]{img/snd-order/noViolenceLeft.png}\\
+\noindent\includegraphics[scale = 0.6]{img/snd-order/noViolenceRight.png}\\
 \end{center}
 
 The grammar in \texttt{grammars/Pacman/pacman2.ggx} simulates a simple Pacman game.
@@ -393,13 +411,12 @@ This grammar contains the second order production above.
 Running the command below will create a new grammar file where all second order productions are applied once on all possible matches of the first order productions.
 
 \begin{minted}{bash}
-  $ verigraph snd-order -o output.ggx \
-  	grammars/Pacman/pacman2.ggx
+  $ verigraph snd-order -o output.ggx grammars/Pacman/pacman2.ggx
 \end{minted}
 
 The new production below must be on \texttt{output.ggx} file.
 
-{\noindent\centering\includegraphics[scale = 0.5]{kill.png}\\}
+{\noindent\centering\includegraphics[scale = 0.5]{img/snd-order/kill.png}\\}
 
 \subsection{Inter-level Analysis}
 
@@ -418,7 +435,7 @@ Despite of it, a log with quantitative information is generated running the comm
 
 \begin{description}
 \item[API internal documentation]:\\ \url{https://verites.github.io/verigraph-docs/}
-\item[Reporting issues with \emph{Verigraph} or its tutorial]:\\ \url{https://github.com/Verites/verigraph/issues}
+\item[Reporting issues or suggestions about \emph{Verigraph} and its tutorial]:\\ \url{https://github.com/Verites/verigraph/issues}
 \item[Authors' Information]:
 \begin{itemize}
 \item Andrei Costa: \url{https://inf.ufrgs.br/~acosta/}
