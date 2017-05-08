@@ -431,6 +431,41 @@ Despite of it, a log with quantitative information is generated running the comm
 
 \pagebreak
 
+\section{Graph Processes}
+
+\begin{tutorialstep}
+  Using \texttt{AGG}, open the file \texttt{grammars/Server/server.ggx}, then right-click on Grammar $>$ New $>$ Rule Sequence. \\
+
+  \noindent
+  \centering
+  \includegraphics[scale = 0.6]{img/concurrent-rules/rule-sequence_01.png}
+\end{tutorialstep}
+
+\begin{tutorialstep}
+  Right-click the rule sequence created below the rules of the grammar, then click on \texttt{Show/Edit}, a new pop-up must open.\\
+
+  \begin{center}
+  \noindent
+  \centering
+  \includegraphics[scale = 0.5]{img/concurrent-rules/rule-sequence_02.png}\\
+  \end{center}
+  
+  Click twice on \texttt{New Subsequence} button, the subsequences created will be used to model the input-output relation of the rules. Select the first subsequence to add the rules to it. After, select the second subsequence and add the same rules in the inverse order.
+\end{tutorialstep}
+
+\begin{tutorialstep}
+
+  Once the subsequence was selected, we can add rules to the \texttt{Select a rule} table. Select any rule(s) and click the \texttt{Add} button. You may add a rule multiples times or change its number of \texttt{Iterations} to repeat it. Once the rule sequence is defined, click on close and save the file.\\
+
+  \noindent
+  \centering
+  \includegraphics[scale = 0.6]{img/concurrent-rules/rule-sequence_03.png}\\
+\end{tutorialstep}
+
+\subsection{Test Generation}
+
+\pagebreak
+
 \section{Contact Information}
 
 \begin{description}
